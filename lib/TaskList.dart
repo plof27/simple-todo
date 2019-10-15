@@ -3,33 +3,33 @@ import 'package:simple_todo/Task.dart';
 import 'package:flutter/material.dart';
 
 class _TaskListState extends State<TaskList> {
-  final _tasks = <String>[
-    "Task 1",
-    "Task 2",
-  ];
+  int _tasks = 0;
 
   void _addTask() {
     setState(() {
-      _tasks.add("This is a task");
+      _tasks += 1;
     });
   }
 
   List<Widget> _buildTaskList() {
-    return _tasks.map(
-        (String taskString) => Task(taskName: taskString,)
-    ).toList();
+    return <Widget>[
+      for(var i=0; i < _tasks; i++) Task()
+    ];
   }
   
   @override
   Widget build(BuildContext context) {
-    print(_tasks);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: ListView(
-        children: _buildTaskList(),
+      body: GestureDetector(
+        onTap: () => (FocusScope.of(context).requestFocus(new FocusNode())),
+
+        child: ListView(
+          children: _buildTaskList(),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addTask,

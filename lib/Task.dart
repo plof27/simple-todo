@@ -13,7 +13,9 @@ class _TaskState extends State<Task> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(widget.taskName),
+      title: TextField(
+        autofocus: true,
+      ),
       onTap: _toggleTaskState,
       leading: Icon(
         _completed ? Icons.check_box : Icons.check_box_outline_blank,
