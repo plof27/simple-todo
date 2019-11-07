@@ -1,34 +1,38 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:simple_todo/TaskData.dart';
+
+class Task extends StatefulWidget {
+  Task({Key key, this.taskData}) : super(key: key);
+
+  final TaskData taskData;
+
+  @override
+  _TaskState createState() => _TaskState();
+}
 
 class _TaskState extends State<Task> {
-  bool _completed = false;
 
-  void _toggleTaskState() {
+  void _toggleCompletion() {
     setState(() {
-      _completed = !_completed;
+      widget.taskData.toggleCompletion();
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    if(widget.taskData.shouldFocus) {
+      FocusScope.of(context).requestFocus();
+    }
+
     return ListTile(
       title: TextField(
-        autofocus: true,
+        autofocus: widget.taskData.shouldFocus,
       ),
-      onTap: _toggleTaskState,
+      onTap: _toggleCompletion,
       leading: Icon(
-        _completed ? Icons.check_box : Icons.check_box_outline_blank,
-      )
+          widget.taskData.completed ? Icons.check_box : Icons.check_box_outline_blank
+      ),
     );
   }
-}
-
-class Task extends StatefulWidget {
-  Task({Key key, this.taskName}) : super(key: key);
-
-  final String taskName;
-
-  @override
-  _TaskState createState() => _TaskState();
 }

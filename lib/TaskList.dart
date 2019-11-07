@@ -1,20 +1,47 @@
 import 'package:flutter/cupertino.dart';
 import 'package:simple_todo/Task.dart';
 import 'package:flutter/material.dart';
+import 'package:simple_todo/TaskData.dart';
+
+class TaskList extends StatefulWidget {
+  TaskList({Key key, this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  _TaskListState createState() => _TaskListState();
+}
 
 class _TaskListState extends State<TaskList> {
-  int _tasks = 0;
+  final _tasks = <TaskData>[];
 
   void _addTask() {
     setState(() {
-      _tasks += 1;
+      // set all other tasks to not focus
+      _tasks.forEach((taskData) {
+        taskData.shouldFocus = false;
+      });
+
+      // reset the app focus so the next task will autofocus properly
+      FocusScope.of(context).unfocus();
+
+      // add new task at the end of the list and give it focus
+      _tasks.add(TaskData(
+        shouldFocus: true,
+      ));
     });
   }
 
-  List<Widget> _buildTaskList() {
-    return <Widget>[
-      for(var i=0; i < _tasks; i++) Task()
-    ];
+  Widget _buildTaskList() {
+    return ListView.builder(
+        itemBuilder: (context, i) {
+          if (_tasks.length == 0 || i >= _tasks.length) return null;
+
+          return Task(
+            taskData: _tasks[i],
+          );
+        },
+    );
   }
   
   @override
@@ -25,11 +52,9 @@ class _TaskListState extends State<TaskList> {
         title: Text(widget.title),
       ),
       body: GestureDetector(
-        onTap: () => (FocusScope.of(context).requestFocus(new FocusNode())),
+        onTap: () => (FocusScope.of(context).unfocus()),
 
-        child: ListView(
-          children: _buildTaskList(),
-        ),
+        child: _buildTaskList(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addTask,
@@ -38,13 +63,4 @@ class _TaskListState extends State<TaskList> {
       ),
     );
   }
-}
-
-class TaskList extends StatefulWidget {
-  TaskList({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _TaskListState createState() => _TaskListState();
 }
