@@ -17,10 +17,8 @@ class _TaskListState extends State<TaskList> {
 
   void _addTask() {
     setState(() {
-      // set all other tasks to not focus
-      _tasks.forEach((taskData) {
-        taskData.shouldFocus = false;
-      });
+      // set previous task to not focus
+      if (_tasks.length >= 1) _tasks[_tasks.length - 1].shouldFocus = false;
 
       // reset the app focus so the next task will autofocus properly
       FocusScope.of(context).unfocus();

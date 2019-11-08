@@ -28,6 +28,8 @@ class _TaskState extends State<Task> {
     return ListTile(
       title: TextField(
         autofocus: widget.taskData.shouldFocus,
+        onSubmitted: widget.taskData.setText,
+        controller: TextEditingController(text: widget.taskData.taskText),
       ),
       onTap: _toggleCompletion,
       leading: Icon(

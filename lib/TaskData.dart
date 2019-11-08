@@ -1,5 +1,5 @@
 class TaskData{
-//  String taskText;
+  String taskText;
   bool completed=false;
 
   bool shouldFocus;
@@ -8,5 +8,9 @@ class TaskData{
 
   void toggleCompletion() {
     this.completed = !this.completed;
+  }
+
+  void setText(String text) {
+    taskText = text;
   }
 }
