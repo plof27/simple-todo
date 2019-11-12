@@ -12,10 +12,32 @@ class Task extends StatefulWidget {
 }
 
 class _TaskState extends State<Task> {
+  TextEditingController _controller;
+
+  void initState() {
+    // i don't understand how any of this works
+    _controller = TextEditingController(text: widget.taskData.taskText);
+
+    _controller.addListener(() {
+      final text = _controller.text;
+      _controller.value = _controller.value.copyWith(
+        text: text,
+      );
+      _updateTaskText(_controller.text);
+    });
+
+    super.initState();
+  }
 
   void _toggleCompletion() {
     setState(() {
       widget.taskData.toggleCompletion();
+    });
+  }
+
+  void _updateTaskText(String newText) {
+    setState(() {
+      widget.taskData.setText(newText);
     });
   }
 
@@ -28,8 +50,7 @@ class _TaskState extends State<Task> {
     return ListTile(
       title: TextField(
         autofocus: widget.taskData.shouldFocus,
-        onSubmitted: widget.taskData.setText,
-        controller: TextEditingController(text: widget.taskData.taskText),
+        controller: _controller,
       ),
       onTap: _toggleCompletion,
       leading: Icon(
