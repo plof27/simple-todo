@@ -51,6 +51,13 @@ class _TaskState extends State<Task> {
       title: TextField(
         autofocus: widget.taskData.shouldFocus,
         controller: _controller,
+        style: TextStyle(
+          fontSize: 17
+        ),
+        decoration: InputDecoration(
+          border: InputBorder.none,
+        ),
+//        decoration: null,
       ),
       onTap: _toggleCompletion,
       leading: Icon(

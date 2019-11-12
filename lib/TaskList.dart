@@ -33,11 +33,17 @@ class _TaskListState extends State<TaskList> {
   Widget _buildTaskList() {
     return ListView.builder(
         itemBuilder: (context, i) {
-          if (_tasks.length == 0 || i >= _tasks.length) return null;
+          if (_tasks.length == 0 || i >= _tasks.length*2) return null;
 
-          return Task(
-            taskData: _tasks[i],
-          );
+          if(i%2 == 0)
+            return Task(
+              taskData: _tasks[(i/2).round()],
+            );
+          else
+            return Divider(
+              height: 1,
+              color: Colors.black26,
+            );
         },
     );
   }
@@ -51,7 +57,6 @@ class _TaskListState extends State<TaskList> {
       ),
       body: GestureDetector(
         onTap: () => (FocusScope.of(context).unfocus()),
-
         child: _buildTaskList(),
       ),
       floatingActionButton: FloatingActionButton(
