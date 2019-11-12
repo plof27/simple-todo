@@ -15,18 +15,13 @@ class _TaskState extends State<Task> {
   TextEditingController _controller;
 
   void initState() {
-    // i don't understand how any of this works
     _controller = TextEditingController(text: widget.taskData.taskText);
-
-    _controller.addListener(() {
-      final text = _controller.text;
-      _controller.value = _controller.value.copyWith(
-        text: text,
-      );
-      _updateTaskText(_controller.text);
-    });
-
     super.initState();
+  }
+
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   void _toggleCompletion() {
@@ -51,11 +46,14 @@ class _TaskState extends State<Task> {
       title: TextField(
         autofocus: widget.taskData.shouldFocus,
         controller: _controller,
+        onChanged: (newText) {
+          _updateTaskText(newText);
+        },
         style: TextStyle(
           fontSize: 17
         ),
         decoration: InputDecoration(
-          border: InputBorder.none,
+          border: InputBorder.none
         ),
 //        decoration: null,
       ),
