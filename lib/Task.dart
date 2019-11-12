@@ -36,6 +36,12 @@ class _TaskState extends State<Task> {
     });
   }
 
+  void _updateTaskFocus(bool newFocus) {
+    setState(() {
+      widget.taskData.shouldFocus = newFocus;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     if(widget.taskData.shouldFocus) {
@@ -47,6 +53,7 @@ class _TaskState extends State<Task> {
         autofocus: widget.taskData.shouldFocus,
         controller: _controller,
         onChanged: (newText) {
+          _updateTaskFocus(false);
           _updateTaskText(newText);
         },
         style: TextStyle(
